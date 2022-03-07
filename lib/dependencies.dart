@@ -8,33 +8,32 @@ class AppDependencies {
 
   AppDependencies({required this.isProduction});
 
-  final StorageDependencies storage = StorageDependencies();
+  final service = ServiceDependencies();
 
-  late final RepositoryDependencies repository = RepositoryDependencies(
-    storageDependencies: storage,
+  final storage = StorageDependencies();
+
+  late final repository = RepositoryDependencies(
+    storage: storage,
   );
-
-  final ServiceDependencies service = ServiceDependencies();
 }
 
 class StorageDependencies {
-  final LocalStorage local = LocalStorage();
+  final local = LocalStorage();
+}
+
+class ServiceDependencies {
+  final route = RouteService();
+
+  final dialog = DialogService();
 }
 
 class RepositoryDependencies {
   final StorageDependencies _storage;
 
-  RepositoryDependencies({
-    required StorageDependencies storageDependencies,
-  }) : _storage = storageDependencies;
+  RepositoryDependencies({required StorageDependencies storage})
+      : _storage = storage;
 
-  late final BudgetRepository budget = BudgetRepository(
+  late final budget = BudgetRepository(
     localStorage: _storage.local,
   );
-}
-
-class ServiceDependencies {
-  final RouteService route = RouteService();
-
-  final DialogService dialog = DialogService();
 }
