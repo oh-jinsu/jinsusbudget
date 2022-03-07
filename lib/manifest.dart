@@ -1,8 +1,10 @@
 import 'package:jinsusbudget/__core__/view.dart';
+import 'package:jinsusbudget/controllers/onboard.dart';
 import 'package:jinsusbudget/dependencies.dart';
 import 'package:jinsusbudget/controllers/home.dart';
 import 'package:jinsusbudget/controllers/splash.dart';
 import 'package:jinsusbudget/views/home.dart';
+import 'package:jinsusbudget/views/onboard.dart';
 import 'package:jinsusbudget/views/splash.dart';
 
 class AppManifest {
@@ -27,6 +29,12 @@ class AppManifest {
               systemService: dependencies.service.system,
             ),
           ),
+      "/onboard": () => OnboardView(
+            controller: OnboardController(
+              routeService: dependencies.service.route,
+              dialogService: dependencies.service.dialog,
+            ),
+          )
     };
   }
 }
