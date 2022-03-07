@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jinsusbudget/theme/app_bar.dart';
+import 'package:jinsusbudget/theme/button.dart';
 import 'package:jinsusbudget/theme/color.dart';
 import 'package:jinsusbudget/theme/icon.dart';
 import 'package:jinsusbudget/theme/text.dart';
@@ -9,6 +10,7 @@ final theme = ThemeData(
   iconTheme: iconTheme,
   textTheme: textTheme,
   appBarTheme: appBarTheme,
+  elevatedButtonTheme: elevatedButtonTheme,
   backgroundColor: Colors.white,
   scaffoldBackgroundColor: const Color(0xfff2f2f7),
   primaryColor: const Color(0xff007aff),

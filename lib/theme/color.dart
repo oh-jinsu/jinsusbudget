@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
 const colorScheme = ColorScheme.light(
-  primary: Color(0xff37c759),
+  primary: Color(0xff007aff),
   secondary: Color(0xffde0a19),
 );
