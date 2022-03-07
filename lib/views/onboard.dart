@@ -42,6 +42,7 @@ class OnboardView extends View {
                 TextField(
                   controller: textEditingController,
                   focusNode: focusNode,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "10000",
                     hintStyle: TextStyle(
@@ -59,7 +60,17 @@ class OnboardView extends View {
                 ),
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final value = textEditingController.text;
+
+                    final amount = int.tryParse(value);
+
+                    if (amount == null) {
+                      return;
+                    }
+
+                    controller.submit(amount);
+                  },
                   child: const Text("시작하기"),
                 ),
               ],

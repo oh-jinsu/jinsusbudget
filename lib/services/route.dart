@@ -1,3 +1,21 @@
+import 'package:flutter/widgets.dart';
+import 'package:jinsusbudget/__core__/context.dart';
+
 class RouteService {
-  void navigateSplashToHome() {}
+  void pop() {
+    Navigator.of(requireContext()).pop();
+  }
+
+  Future<void> navigateSplashToHome() async {
+    await Navigator.of(requireContext()).pushNamedAndRemoveUntil(
+      "/",
+      (route) => false,
+    );
+  }
+
+  Future<void> navigateSplashToOnboard() async {
+    await Navigator.of(requireContext()).pushNamed(
+      "/onboard",
+    );
+  }
 }

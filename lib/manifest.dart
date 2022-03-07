@@ -26,13 +26,15 @@ class AppManifest {
             controller: SplashController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
-              systemService: dependencies.service.system,
+              budgetRepository: dependencies.repository.budget,
+              localStorage: dependencies.storage.local,
             ),
           ),
       "/onboard": () => OnboardView(
             controller: OnboardController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
+              budgetRepository: dependencies.repository.budget,
             ),
           )
     };
