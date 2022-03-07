@@ -8,8 +8,14 @@ abstract class View extends StatelessWidget {
   Widget build(BuildContext context) {
     contextQueue.addLast(context);
 
+    onWillMount();
+
+    Future.delayed(Duration.zero, onMount);
+
     return WillPopScope(
       onWillPop: () async {
+        onUnmount();
+
         contextQueue.remove(context);
 
         return true;
@@ -17,6 +23,12 @@ abstract class View extends StatelessWidget {
       child: render(context),
     );
   }
+
+  void onWillMount() {}
+
+  void onMount() {}
+
+  void onUnmount() {}
 
   Widget render(BuildContext context);
 }
