@@ -17,7 +17,7 @@ class AppManifest {
   Map<String, View Function()> initialize() {
     return {
       "/": () => HomeView(
-            navigator: HomeController(
+            controller: HomeController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
             ),

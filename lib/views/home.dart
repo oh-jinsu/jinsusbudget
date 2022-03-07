@@ -7,11 +7,11 @@ import 'package:jinsusbudget/components/home/home_piggy_bank.dart';
 import 'package:jinsusbudget/controllers/home.dart';
 
 class HomeView extends View {
-  final HomeController navigator;
+  final HomeController controller;
 
   const HomeView({
     Key? key,
-    required this.navigator,
+    required this.controller,
   }) : super(key: key);
 
   @override
