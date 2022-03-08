@@ -40,7 +40,7 @@ class HomeView extends View {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: HomePiggyBank(),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 24.0),
             Padding(
               padding: const EdgeInsets.only(left: 24.0),
               child: Text(
@@ -53,12 +53,11 @@ class HomeView extends View {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: HomePocket(),
             ),
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 20.0),
             const Padding(
-              padding: EdgeInsets.only(left: 24.0, right: 8.0),
+              padding: EdgeInsets.only(left: 24.0, right: 10.0),
               child: HomeLedgerHeader(),
             ),
-            const SizedBox(height: 2.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: HomeLedger(

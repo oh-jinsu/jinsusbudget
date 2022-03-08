@@ -19,11 +19,7 @@ class HomePiggyBank extends StatelessWidget {
           ),
           Text(
             "404,340원",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           )
         ],
       ),

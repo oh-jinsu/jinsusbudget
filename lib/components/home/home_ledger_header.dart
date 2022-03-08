@@ -17,7 +17,7 @@ class HomeLedgerHeader extends StatelessWidget {
           icon: Icon(
             Icons.add,
             size: 32.0,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).iconTheme.color,
           ),
         ),
       ],

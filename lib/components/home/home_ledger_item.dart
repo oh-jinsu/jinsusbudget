@@ -21,9 +21,13 @@ class HomeLedgerItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 16.0),
               Text(
                 label,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4.0),
               Text(
@@ -34,9 +38,10 @@ class HomeLedgerItem extends StatelessWidget {
                       .bodyMedium
                       ?.color
                       ?.withOpacity(.7),
-                  fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                  fontSize: 16,
                 ),
               ),
+              const SizedBox(height: 16.0),
             ],
           ),
         ),

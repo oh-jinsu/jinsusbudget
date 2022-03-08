@@ -15,7 +15,7 @@ class HomeLedger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppContainer(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 0.0),
       child: ListView.builder(
         padding: const EdgeInsets.all(0.0),
         shrinkWrap: shrinkWrap,
@@ -24,7 +24,7 @@ class HomeLedger extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index % 2 == 1) {
             return const Divider(
-              height: 32.0,
+              height: 0.0,
             );
           }
 

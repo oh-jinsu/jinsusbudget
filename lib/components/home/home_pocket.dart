@@ -11,7 +11,7 @@ class HomePocket extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            "오늘 쓸 수 있는 돈",
+            "오늘의 예산",
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(
@@ -21,7 +21,7 @@ class HomePocket extends StatelessWidget {
             "13,340원",
             style: TextStyle(
               color: Theme.of(context).primaryColor,
-              fontSize: 36.0,
+              fontSize: 32.0,
               fontWeight: FontWeight.bold,
             ),
           )
