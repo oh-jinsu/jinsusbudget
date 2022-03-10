@@ -2,9 +2,21 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalStorageTable {
+  final budget = const BudgetTable();
+
   final piggyBank = const PiggyBankTable();
 
   const LocalStorageTable();
+}
+
+class BudgetTable {
+  final name = "budget";
+
+  final id = "id";
+
+  final amount = "amount";
+
+  const BudgetTable();
 }
 
 class PiggyBankTable {
@@ -27,7 +39,7 @@ class LocalStorage implements DatabaseExecutor {
       join(await getDatabasesPath(), "jinsusbudget.db"),
       onCreate: (db, version) {
         db.execute(
-          "CREATE TABLE budget(id INTEGER PRIMARY KEY, amount INTEGER)",
+          "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY, ${table.budget.amount} INTEGER)",
         );
         db.execute(
           "CREATE TABLE ${table.piggyBank.name}(${table.piggyBank.id} INTEGER PRIMARY KEY, ${table.piggyBank.amount} INTEGER)",

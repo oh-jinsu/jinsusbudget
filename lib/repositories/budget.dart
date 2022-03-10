@@ -5,16 +5,14 @@ import 'package:sqflite/sqflite.dart';
 class BudgetRepository {
   final LocalStorage localStorage;
 
-  static const _table = "budget";
-
   BudgetRepository({
     required this.localStorage,
   });
 
   Future<BudgetModel?> find() async {
     final result = await localStorage.query(
-      _table,
-      where: "id = ?",
+      LocalStorage.table.budget.name,
+      where: "${LocalStorage.table.budget.id} = ?",
       whereArgs: [1],
     );
 
@@ -26,17 +24,21 @@ class BudgetRepository {
   }
 
   Future<BudgetModel> save({required int amount}) async {
-    final budgetModel = BudgetModel(
-      id: 1,
-      amount: amount,
-    );
-
     await localStorage.insert(
-      _table,
-      budgetModel.toMap(),
+      LocalStorage.table.budget.name,
+      {
+        LocalStorage.table.budget.id: 1,
+        LocalStorage.table.budget.amount: amount,
+      },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    return budgetModel;
+    final result = await find();
+
+    if (result == null) {
+      throw Exception("저장한 예산을 찾지 못했습니다.");
+    }
+
+    return result;
   }
 }
