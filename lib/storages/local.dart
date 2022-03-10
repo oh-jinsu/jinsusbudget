@@ -1,15 +1,39 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+class LocalStorageTable {
+  final piggyBank = const PiggyBankTable();
+
+  const LocalStorageTable();
+}
+
+class PiggyBankTable {
+  final name = "piggy_bank";
+
+  final id = "id";
+
+  final amount = "amount";
+
+  const PiggyBankTable();
+}
+
 class LocalStorage implements DatabaseExecutor {
   late final Database _db;
+
+  static const table = LocalStorageTable();
 
   Future<void> initialize() async {
     _db = await openDatabase(
       join(await getDatabasesPath(), "jinsusbudget.db"),
       onCreate: (db, version) {
-        return db.execute(
+        db.execute(
           "CREATE TABLE budget(id INTEGER PRIMARY KEY, amount INTEGER)",
+        );
+        db.execute(
+          "CREATE TABLE ${table.piggyBank.name}(${table.piggyBank.id} INTEGER PRIMARY KEY, ${table.piggyBank.amount} INTEGER)",
+        );
+        db.rawInsert(
+          "INSERT INTO ${table.piggyBank.name}(${table.piggyBank.id}, ${table.piggyBank.amount}) VALUES(1, 0)",
         );
       },
       version: 1,

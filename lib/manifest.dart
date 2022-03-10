@@ -20,6 +20,7 @@ class AppManifest {
             controller: HomeController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
+              budgetRepository: dependencies.repository.budget,
             ),
           ),
       "/splash": () => SplashView(
