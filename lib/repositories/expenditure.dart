@@ -63,7 +63,7 @@ class ExpenditureRepository {
 
   Future<ExpenditureModel> save({
     required String label,
-    required String amount,
+    required int amount,
   }) async {
     final date = DateTime.now();
 
@@ -96,7 +96,7 @@ class ExpenditureRepository {
 
   Future<ExpenditureModel> update({
     required int id,
-    String? label,
+    int? label,
     String? amount,
   }) async {
     final map = <String, dynamic>{};
