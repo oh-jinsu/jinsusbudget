@@ -1,8 +1,9 @@
+import 'package:jinsusbudget/__core__/controller.dart';
 import 'package:jinsusbudget/repositories/budget.dart';
 import 'package:jinsusbudget/services/dialog.dart';
 import 'package:jinsusbudget/services/route.dart';
 
-class OnboardController {
+class OnboardController extends Controller {
   final RouteService routeService;
   final DialogService dialogService;
   final BudgetRepository budgetRepository;
@@ -18,4 +19,7 @@ class OnboardController {
 
     routeService.pop();
   }
+
+  @override
+  void onDispose() {}
 }

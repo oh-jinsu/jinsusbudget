@@ -1,10 +1,11 @@
+import 'package:jinsusbudget/__core__/controller.dart';
 import 'package:jinsusbudget/models/budget.dart';
 import 'package:jinsusbudget/repositories/budget.dart';
 import 'package:jinsusbudget/services/dialog.dart';
 import 'package:jinsusbudget/services/route.dart';
 import 'package:jinsusbudget/storages/local.dart';
 
-class SplashController {
+class SplashController extends Controller {
   final RouteService routeService;
   final DialogService dialogService;
   final BudgetRepository budgetRepository;
@@ -40,4 +41,7 @@ class SplashController {
 
     return result;
   }
+
+  @override
+  void onDispose() {}
 }
