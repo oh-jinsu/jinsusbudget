@@ -42,7 +42,7 @@ class ExpenditureRepository {
     final results = await localStorage.query(
       LocalStorage.table.expenditure.name,
       where:
-          "${LocalStorage.table.expenditure.year} = ?, ${LocalStorage.table.expenditure.month} = ?, ${LocalStorage.table.expenditure.day} = ?",
+          "${LocalStorage.table.expenditure.year} = ? AND ${LocalStorage.table.expenditure.month} = ? AND ${LocalStorage.table.expenditure.day} = ?",
       whereArgs: [dateTime.year, dateTime.month + 1, dateTime.day],
     );
 
