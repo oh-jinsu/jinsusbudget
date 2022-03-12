@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/components/home/home_ledger_header.dart';
 import 'package:jinsusbudget/components/home/home_pocket.dart';
@@ -13,6 +14,13 @@ class HomeView extends View {
     Key? key,
     required this.controller,
   }) : super(key: key);
+
+  @override
+  void onUnmount() {
+    controller.onDispose();
+
+    super.onUnmount();
+  }
 
   @override
   Widget render(BuildContext context) {
@@ -36,33 +44,49 @@ class HomeView extends View {
               ],
             ),
             const SizedBox(height: 8.0),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomePiggyBank(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: HomePiggyBank(
+                homeController: controller,
+              ),
             ),
             const SizedBox(height: 24.0),
             Padding(
               padding: const EdgeInsets.only(left: 24.0),
-              child: Text(
-                "3월 3일 월요일",
-                style: Theme.of(context).textTheme.headlineSmall,
+              child: StreamBuilder(
+                stream: controller.today,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.data as DateTime;
+
+                    return Text(
+                      DateFormat("yyyy년 M월 d일").format(data),
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    );
+                  }
+
+                  return const Center(child: CircularProgressIndicator());
+                },
               ),
             ),
             const SizedBox(height: 8.0),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomePocket(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: HomePocket(
+                homeController: controller,
+              ),
             ),
             const SizedBox(height: 20.0),
             const Padding(
               padding: EdgeInsets.only(left: 24.0, right: 10.0),
               child: HomeLedgerHeader(),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: HomeLedger(
+                homeController: controller,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
               ),
             ),
             const SizedBox(height: 32.0),

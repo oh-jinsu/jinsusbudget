@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jinsusbudget/components/app/container.dart';
+import 'package:jinsusbudget/controllers/home.dart';
 
 class HomePiggyBank extends StatelessWidget {
-  const HomePiggyBank({Key? key}) : super(key: key);
+  final HomeController homeController;
+
+  const HomePiggyBank({
+    Key? key,
+    required this.homeController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +24,27 @@ class HomePiggyBank extends StatelessWidget {
           const SizedBox(
             height: 8.0,
           ),
-          Text(
-            "404,340원",
-            style: Theme.of(context).textTheme.headlineSmall,
-          )
+          StreamBuilder(
+            stream: homeController.spare,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final data = snapshot.data as int;
+
+                return Text(
+                  "${NumberFormat("###,###,###,###").format(data)}원",
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    color: Color(0xff7d7d7d),
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ],
       ),
     );

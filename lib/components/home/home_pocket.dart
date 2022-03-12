@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jinsusbudget/components/app/container.dart';
+import 'package:jinsusbudget/controllers/home.dart';
 
 class HomePocket extends StatelessWidget {
-  const HomePocket({Key? key}) : super(key: key);
+  final HomeController homeController;
+
+  const HomePocket({
+    Key? key,
+    required this.homeController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +24,24 @@ class HomePocket extends StatelessWidget {
           const SizedBox(
             height: 8.0,
           ),
-          Text(
-            "13,340원",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-            ),
-          )
+          StreamBuilder(
+              stream: homeController.budget,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.data as int;
+
+                  return Text(
+                    "${NumberFormat("###,###,###,###").format(data)}원",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }
+
+                return const Center(child: CircularProgressIndicator());
+              })
         ],
       ),
     );
