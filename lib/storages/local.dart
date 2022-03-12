@@ -54,18 +54,20 @@ class ExpenditureTable {
 }
 
 class LocalStorage implements DatabaseExecutor {
-  late final Database _db;
+  Database? _database;
+
+  Database get database => _database!;
 
   static const table = LocalStorageTable();
 
   Future<void> initialize() async {
-    _db = await openDatabase(
-      join(await getDatabasesPath(), "jinsusbudget.db"),
-      onCreate: (db, version) {
-        db.execute(
+    _database = await openDatabase(
+      join(await getDatabasesPath(), "jinsusbudget_1.db"),
+      onCreate: (db, version) async {
+        await db.execute(
           "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY, ${table.budget.amount} INTEGER)",
         );
-        db.execute(
+        await db.execute(
           "CREATE TABLE ${table.piggyBank.name}(${table.piggyBank.id} INTEGER PRIMARY KEY, ${table.piggyBank.amount} INTEGER)",
         );
         db.rawInsert(
@@ -80,11 +82,11 @@ class LocalStorage implements DatabaseExecutor {
   }
 
   @override
-  Batch batch() => _db.batch();
+  Batch batch() => database.batch();
 
   @override
   Future<int> delete(String table, {String? where, List<Object?>? whereArgs}) =>
-      _db.delete(
+      database.delete(
         table,
         where: where,
         whereArgs: whereArgs,
@@ -92,7 +94,7 @@ class LocalStorage implements DatabaseExecutor {
 
   @override
   Future<void> execute(String sql, [List<Object?>? arguments]) async =>
-      _db.execute(
+      database.execute(
         sql,
         arguments,
       );
@@ -100,7 +102,7 @@ class LocalStorage implements DatabaseExecutor {
   @override
   Future<int> insert(String table, Map<String, Object?> values,
           {String? nullColumnHack, ConflictAlgorithm? conflictAlgorithm}) =>
-      _db.insert(
+      database.insert(
         table,
         values,
         nullColumnHack: nullColumnHack,
@@ -118,7 +120,7 @@ class LocalStorage implements DatabaseExecutor {
           String? orderBy,
           int? limit,
           int? offset}) =>
-      _db.query(
+      database.query(
         table,
         distinct: distinct,
         columns: columns,
@@ -133,11 +135,11 @@ class LocalStorage implements DatabaseExecutor {
 
   @override
   Future<int> rawDelete(String sql, [List<Object?>? arguments]) =>
-      _db.rawDelete(sql, arguments);
+      database.rawDelete(sql, arguments);
 
   @override
   Future<int> rawInsert(String sql, [List<Object?>? arguments]) =>
-      _db.rawInsert(
+      database.rawInsert(
         sql,
         arguments,
       );
@@ -145,14 +147,14 @@ class LocalStorage implements DatabaseExecutor {
   @override
   Future<List<Map<String, Object?>>> rawQuery(String sql,
           [List<Object?>? arguments]) =>
-      _db.rawQuery(
+      database.rawQuery(
         sql,
         arguments,
       );
 
   @override
   Future<int> rawUpdate(String sql, [List<Object?>? arguments]) =>
-      _db.rawUpdate(
+      database.rawUpdate(
         sql,
         arguments,
       );
@@ -162,7 +164,7 @@ class LocalStorage implements DatabaseExecutor {
           {String? where,
           List<Object?>? whereArgs,
           ConflictAlgorithm? conflictAlgorithm}) =>
-      _db.update(
+      database.update(
         table,
         values,
         where: where,
