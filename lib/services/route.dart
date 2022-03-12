@@ -8,7 +8,7 @@ class RouteService {
 
   Future<void> navigateSplashToHome() async {
     await Navigator.of(requireContext()).pushNamedAndRemoveUntil(
-      "/",
+      "/home",
       (route) => false,
     );
   }
