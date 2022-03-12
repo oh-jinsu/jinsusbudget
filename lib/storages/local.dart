@@ -6,6 +6,8 @@ class LocalStorageTable {
 
   final piggyBank = const PiggyBankTable();
 
+  final expenditure = const ExpenditureTable();
+
   const LocalStorageTable();
 }
 
@@ -29,6 +31,28 @@ class PiggyBankTable {
   const PiggyBankTable();
 }
 
+class ExpenditureTable {
+  final name = "expenditure";
+
+  final id = "id";
+
+  final label = "label";
+
+  final amount = "amount";
+
+  final year = "year";
+
+  final month = "month";
+
+  final day = "day";
+
+  final hour = "hour";
+
+  final minute = "minute";
+
+  const ExpenditureTable();
+}
+
 class LocalStorage implements DatabaseExecutor {
   late final Database _db;
 
@@ -46,6 +70,9 @@ class LocalStorage implements DatabaseExecutor {
         );
         db.rawInsert(
           "INSERT INTO ${table.piggyBank.name}(${table.piggyBank.id}, ${table.piggyBank.amount}) VALUES(1, 0)",
+        );
+        db.execute(
+          "CREATE TABLE ${table.expenditure.name}(${table.expenditure.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.expenditure.label} TEXT NOT NULL, ${table.expenditure.amount} INTEGER NOT NULL, ${table.expenditure.year} INTEGER NOT NULL, ${table.expenditure.month} INTEGER NOT NULL, ${table.expenditure.day} INTEGER NOT NULL, ${table.expenditure.hour} INTEGER NOT NULL, ${table.expenditure.minute} INTEGER NOT NULL)",
         );
       },
       version: 1,
