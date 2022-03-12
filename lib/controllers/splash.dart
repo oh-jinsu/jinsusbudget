@@ -1,4 +1,5 @@
 import 'package:jinsusbudget/__core__/controller.dart';
+import 'package:jinsusbudget/environment.dart';
 import 'package:jinsusbudget/models/budget.dart';
 import 'package:jinsusbudget/repositories/budget.dart';
 import 'package:jinsusbudget/services/dialog.dart';
@@ -21,6 +22,8 @@ class SplashController extends Controller {
   }
 
   void _bootstrap() async {
+    await Environment.initialize();
+
     await localStorage.initialize();
 
     await Future.delayed(const Duration(milliseconds: 500));

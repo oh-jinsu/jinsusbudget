@@ -1,3 +1,4 @@
+import 'package:jinsusbudget/environment.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -62,7 +63,7 @@ class LocalStorage implements DatabaseExecutor {
 
   Future<void> initialize() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), "jinsusbudget_1.db"),
+      join(await getDatabasesPath(), "${Environment.databaseName}.db"),
       onCreate: (db, version) async {
         await db.execute(
           "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY, ${table.budget.amount} INTEGER)",
@@ -77,7 +78,7 @@ class LocalStorage implements DatabaseExecutor {
           "CREATE TABLE ${table.expenditure.name}(${table.expenditure.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.expenditure.label} TEXT NOT NULL, ${table.expenditure.amount} INTEGER NOT NULL, ${table.expenditure.year} INTEGER NOT NULL, ${table.expenditure.month} INTEGER NOT NULL, ${table.expenditure.day} INTEGER NOT NULL, ${table.expenditure.hour} INTEGER NOT NULL, ${table.expenditure.minute} INTEGER NOT NULL)",
         );
       },
-      version: 1,
+      version: Environment.databaseVersion,
     );
   }
 
