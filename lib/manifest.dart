@@ -21,6 +21,8 @@ class AppManifest {
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
               budgetRepository: dependencies.repository.budget,
+              piggyBankRepository: dependencies.repository.piggyBank,
+              expenditureRepository: dependencies.repository.expenditure,
             ),
           ),
       "/splash": () => SplashView(
