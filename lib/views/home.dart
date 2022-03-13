@@ -77,9 +77,11 @@ class HomeView extends View {
               ),
             ),
             const SizedBox(height: 20.0),
-            const Padding(
-              padding: EdgeInsets.only(left: 24.0, right: 10.0),
-              child: HomeLedgerHeader(),
+            Padding(
+              padding: const EdgeInsets.only(left: 24.0, right: 10.0),
+              child: HomeLedgerHeader(
+                homeController: controller,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

@@ -7,6 +7,7 @@ import 'package:jinsusbudget/repositories/expenditure.dart';
 import 'package:jinsusbudget/repositories/piggy_bank.dart';
 import 'package:jinsusbudget/services/dialog.dart';
 import 'package:jinsusbudget/services/route.dart';
+import 'package:rxdart/subjects.dart';
 
 class HomeController extends Controller {
   final RouteService routeService;
@@ -15,18 +16,17 @@ class HomeController extends Controller {
   final PiggyBankRepository piggyBankRepository;
   final ExpenditureRepository expenditureRepository;
 
-  late final _today =
-      StreamController<DateTime>.broadcast(onListen: _initToday);
+  late final _today = BehaviorSubject<DateTime>(onListen: _initToday);
   Stream<DateTime> get today => _today.stream;
 
-  late final _spare = StreamController<int>.broadcast(onListen: _initSpare);
+  late final _spare = BehaviorSubject<int>(onListen: _initSpare);
   Stream<int> get spare => _spare.stream;
 
-  late final _budget = StreamController<int>.broadcast(onListen: _initBudget);
+  late final _budget = BehaviorSubject<int>(onListen: _initBudget);
   Stream<int> get budget => _budget.stream;
 
-  late final _expenditures = StreamController<List<ExpenditureModel>>.broadcast(
-      onListen: _initExpenditures);
+  late final _expenditures =
+      BehaviorSubject<List<ExpenditureModel>>(onListen: _initExpenditures);
   Stream<List<ExpenditureModel>> get expenditures => _expenditures.stream;
 
   HomeController({
@@ -73,6 +73,22 @@ class HomeController extends Controller {
     final models = await expenditureRepository.findAllForToday(dateTime: today);
 
     _expenditures.sink.add(models);
+  }
+
+  void submitExpenditure({
+    required String label,
+    required int amount,
+  }) async {
+    final model = await expenditureRepository.save(
+      label: label,
+      amount: amount,
+    );
+
+    final array = _expenditures.value;
+
+    final result = [...array, model];
+
+    _expenditures.sink.add(result);
   }
 
   @override
