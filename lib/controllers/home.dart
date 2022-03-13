@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:jinsusbudget/__core__/controller.dart';
 import 'package:jinsusbudget/models/budget.dart';
+import 'package:jinsusbudget/models/config.dart';
 import 'package:jinsusbudget/models/expenditure.dart';
 import 'package:jinsusbudget/repositories/budget.dart';
 import 'package:jinsusbudget/repositories/config.dart';
@@ -67,18 +68,7 @@ class HomeController extends Controller {
     );
 
     if (result == null) {
-      final config = await configRepository.find();
-
-      final amount = config.budget;
-
-      if (amount == null) {
-        throw Exception();
-      }
-
-      await budgetRepository.save(
-        amount: amount,
-        dateTime: _today.value,
-      );
+      await _initForToday();
 
       return _getBudget();
     }
@@ -92,6 +82,70 @@ class HomeController extends Controller {
     );
 
     _expenditures.sink.add(models);
+  }
+
+  Future<void> _initForToday() async {
+    final configModel = await configRepository.find();
+
+    await Future.wait([
+      _initBudgetForToday(configModel: configModel),
+      _initPiggyBankForToday(configModel: configModel),
+    ]);
+
+    await configRepository.updateLastVisit(dateTime: _today.value);
+  }
+
+  Future<void> _initBudgetForToday({
+    required ConfigModel configModel,
+  }) async {
+    final amount = configModel.budget;
+
+    if (amount == null) {
+      throw Exception();
+    }
+
+    await budgetRepository.save(
+      amount: amount,
+      dateTime: _today.value,
+    );
+  }
+
+  Future<void> _initPiggyBankForToday({
+    required ConfigModel configModel,
+  }) async {
+    final differenceInDays =
+        _today.value.difference(configModel.lastVisit).inDays;
+
+    final leftOvers = await Future.wait(List.generate(
+      differenceInDays,
+      (index) => index + 1,
+    ).map((e) async {
+      final at = _today.value.subtract(Duration(days: e));
+
+      final result = await budgetRepository.find(dateTime: at);
+
+      if (result == null) {
+        final config = await configRepository.find();
+
+        final budget = config.budget;
+
+        if (budget == null) {
+          throw Exception();
+        }
+
+        return budget;
+      }
+
+      return result.amount;
+    }));
+
+    if (leftOvers.isEmpty) {
+      return;
+    }
+
+    final amount = leftOvers.reduce((value, element) => value + element);
+
+    await piggyBankRepository.add(amount: amount);
   }
 
   void submitExpenditure({
