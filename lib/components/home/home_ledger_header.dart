@@ -153,7 +153,7 @@ class HomeLedgerHeader extends StatelessWidget {
 
                 Navigator.of(context).pop();
               },
-              child: const Text("확인"),
+              child: const Text("추가"),
             ),
           ],
           contentPadding: const EdgeInsets.only(
