@@ -34,7 +34,7 @@ class AppManifest {
             ),
           ),
       "/onboard": () => OnboardView(
-            controller: OnboardController(
+            onboardController: OnboardController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
               budgetRepository: dependencies.repository.budget,

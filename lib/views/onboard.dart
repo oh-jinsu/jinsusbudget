@@ -3,7 +3,7 @@ import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/controllers/onboard.dart';
 
 class OnboardView extends View {
-  final OnboardController controller;
+  final OnboardController onboardController;
 
   final FocusNode focusNode = FocusNode();
 
@@ -11,7 +11,7 @@ class OnboardView extends View {
 
   OnboardView({
     Key? key,
-    required this.controller,
+    required this.onboardController,
   }) : super(key: key);
 
   @override
@@ -19,6 +19,13 @@ class OnboardView extends View {
     super.onMount();
 
     focusNode.requestFocus();
+  }
+
+  @override
+  void onUnmount() {
+    onboardController.onDispose();
+
+    super.onUnmount();
   }
 
   @override
@@ -69,7 +76,7 @@ class OnboardView extends View {
                       return;
                     }
 
-                    controller.submit(amount);
+                    onboardController.submit(amount);
                   },
                   child: const Text("시작하기"),
                 ),
