@@ -36,11 +36,12 @@ class ExpenditureRepository {
     required DateTime dateTime,
   }) async {
     final results = await localStorage.query(
-      LocalStorage.table.expenditure.name,
-      where:
-          "${LocalStorage.table.expenditure.year} = ? AND ${LocalStorage.table.expenditure.month} = ? AND ${LocalStorage.table.expenditure.day} = ?",
-      whereArgs: [dateTime.year, dateTime.month + 1, dateTime.day],
-    );
+        LocalStorage.table.expenditure.name,
+        where:
+            "${LocalStorage.table.expenditure.year} = ? AND ${LocalStorage.table.expenditure.month} = ? AND ${LocalStorage.table.expenditure.day} = ?",
+        whereArgs: [dateTime.year, dateTime.month + 1, dateTime.day],
+        orderBy:
+            "${LocalStorage.table.expenditure.hour} ASC, ${LocalStorage.table.expenditure.minute} ASC");
 
     return results.map((e) => ExpenditureModelMapper.map(e)).toList();
   }
