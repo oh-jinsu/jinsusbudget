@@ -19,27 +19,11 @@ class App extends StatelessWidget {
 
     bootstrapper.run();
 
-    final manifest = AppManifest(dependencies: dependencies).initialize();
-
     return MaterialApp(
       title: "진수의 가계부",
       theme: theme,
       home: const SplashView(),
-      onGenerateRoute: (settings) {
-        final path = settings.name;
-
-        if (path == null) {
-          return null;
-        }
-
-        final creator = manifest[path];
-
-        if (creator == null) {
-          return null;
-        }
-
-        return MaterialPageRoute(builder: (context) => creator());
-      },
+      routes: AppManifest(dependencies).list,
       builder: (context, child) {
         return MediaQuery(
           child: child!,
