@@ -1,16 +1,8 @@
+import 'package:jinsusbudget/mappers/budget.dart';
+import 'package:jinsusbudget/mappers/config.dart';
 import 'package:jinsusbudget/models/budget.dart';
-import 'package:jinsusbudget/repositories/config.dart';
 import 'package:jinsusbudget/storages/local.dart';
 import 'package:sqflite/sqflite.dart';
-
-class BudgetMapper {
-  static BudgetModel map(Map<String, dynamic> entity) {
-    return BudgetModel(
-      id: entity[LocalStorage.table.budget.id],
-      amount: entity[LocalStorage.table.budget.amount],
-    );
-  }
-}
 
 class BudgetRepository {
   final LocalStorage localStorage;
@@ -36,7 +28,7 @@ class BudgetRepository {
         whereArgs: [1],
       );
 
-      final config = ConfigModelMapper.map(entities[0]);
+      final config = ConfigMapper.map(entities[0]);
 
       await localStorage.insert(
         LocalStorage.table.budget.name,

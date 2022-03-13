@@ -1,14 +1,6 @@
+import 'package:jinsusbudget/mappers/config.dart';
 import 'package:jinsusbudget/models/config.dart';
 import 'package:jinsusbudget/storages/local.dart';
-
-class ConfigModelMapper {
-  static ConfigModel map(Map<String, dynamic> entity) {
-    return ConfigModel(
-      id: entity[LocalStorage.table.config.id],
-      budget: entity[LocalStorage.table.config.budget],
-    );
-  }
-}
 
 class ConfigRepository {
   final LocalStorage localStorage;
@@ -24,7 +16,7 @@ class ConfigRepository {
       whereArgs: [1],
     );
 
-    final result = ConfigModelMapper.map(entities[0]);
+    final result = ConfigMapper.map(entities[0]);
 
     return result;
   }
