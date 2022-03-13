@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:jinsusbudget/models/expenditure.dart';
 import 'package:jinsusbudget/storages/local.dart';
 import 'package:sqflite/sql.dart';
@@ -15,16 +13,14 @@ class ExpenditureModelMapper {
     final hour = map["hour"] as int;
     final minute = map["minute"] as int;
 
+    final formattedDateTime =
+        "$year${month.toString().padLeft(2, "0")}${day.toString().padLeft(2, "0")}T${hour.toString().padLeft(2, "0")}${minute.toString().padLeft(2, "0")}00";
+
     return ExpenditureModel(
       id: id,
       label: label,
       amount: amount,
-      timestamp: DateTime.parse((pow(10, 2) * minute +
-              pow(10, 4) * hour +
-              pow(10, 6) * day +
-              pow(10, 8) * month +
-              pow(10, 10) * year)
-          .toString()),
+      timestamp: DateTime.parse(formattedDateTime),
     );
   }
 }
