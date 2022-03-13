@@ -27,7 +27,7 @@ class AppManifest {
             onboardController: OnboardController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
-              budgetRepository: dependencies.repository.budget,
+              configRepository: dependencies.repository.config,
             ),
           )
     };

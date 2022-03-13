@@ -1,4 +1,5 @@
 import 'package:jinsusbudget/models/budget.dart';
+import 'package:jinsusbudget/repositories/config.dart';
 import 'package:jinsusbudget/storages/local.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -18,61 +19,59 @@ class BudgetRepository {
     required this.localStorage,
   });
 
-  Future<BudgetModel?> find() async {
-    final result = await localStorage.query(
+  Future<BudgetModel> find({
+    required DateTime dateTime,
+  }) async {
+    final entities = await localStorage.query(
       LocalStorage.table.budget.name,
-      where: "${LocalStorage.table.budget.id} = ?",
-      whereArgs: [1],
+      where:
+          "${LocalStorage.table.budget.year} = ? AND ${LocalStorage.table.budget.month} = ? AND ${LocalStorage.table.budget.day} = ?",
+      whereArgs: [dateTime.year, dateTime.month + 1, dateTime.day],
     );
 
-    if (result.isEmpty) {
-      return null;
+    if (entities.isEmpty) {
+      final entities = await localStorage.query(
+        LocalStorage.table.config.name,
+        where: "${LocalStorage.table.config.id} = ?",
+        whereArgs: [1],
+      );
+
+      final config = ConfigModelMapper.map(entities[0]);
+
+      await localStorage.insert(
+        LocalStorage.table.budget.name,
+        {
+          LocalStorage.table.budget.amount: config.budget,
+          LocalStorage.table.budget.year: dateTime.year,
+          LocalStorage.table.budget.month: dateTime.month + 1,
+          LocalStorage.table.budget.day: dateTime.day,
+        },
+      );
+
+      return find(dateTime: dateTime);
     }
 
-    return BudgetMapper.map(result[0]);
+    return BudgetMapper.map(entities[0]);
   }
 
-  Future<BudgetModel> save({required int amount}) async {
-    await localStorage.insert(
-      LocalStorage.table.budget.name,
-      {
-        LocalStorage.table.budget.id: 1,
-        LocalStorage.table.budget.amount: amount,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-
-    final result = await find();
-
-    if (result == null) {
-      throw Exception("저장한 예산을 찾지 못했습니다.");
-    }
-
-    return result;
-  }
-
-  Future<BudgetModel> sub({required int amount}) async {
-    final budget = await find();
-
-    if (budget == null) {
-      throw Exception("예산이 존재하지 않습니다.");
-    }
+  Future<BudgetModel> sub({
+    required int amount,
+    required DateTime dateTime,
+  }) async {
+    final budget = await find(dateTime: dateTime);
 
     await localStorage.update(
       LocalStorage.table.budget.name,
       {
         LocalStorage.table.budget.amount: budget.amount - amount,
       },
-      where: "${LocalStorage.table.budget.id} = ?",
-      whereArgs: [1],
+      where:
+          "${LocalStorage.table.budget.year} = ? AND ${LocalStorage.table.budget.month} = ? AND ${LocalStorage.table.budget.day} = ?",
+      whereArgs: [dateTime.year, dateTime.month + 1, dateTime.day],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    final result = await find();
-
-    if (result == null) {
-      throw Exception("예산이 존재하지 않습니다.");
-    }
+    final result = await find(dateTime: dateTime);
 
     return result;
   }

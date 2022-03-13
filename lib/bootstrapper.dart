@@ -15,18 +15,18 @@ class Bootstrapper {
 
     await Future.delayed(const Duration(milliseconds: 500));
 
-    await _getBudget();
+    await _setBudget();
 
     dependencies.service.route.navigateSplashToHome();
   }
 
-  Future<void> _getBudget() async {
-    final result = await dependencies.repository.budget.find();
+  Future<void> _setBudget() async {
+    final result = await dependencies.repository.config.find();
 
-    if (result == null) {
+    if (result.budget == null) {
       await dependencies.service.route.navigateSplashToOnboard();
 
-      return _getBudget();
+      return _setBudget();
     }
   }
 }

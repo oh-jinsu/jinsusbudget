@@ -3,6 +3,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalStorageTable {
+  final config = const ConfigTable();
+
   final budget = const BudgetTable();
 
   final piggyBank = const PiggyBankTable();
@@ -12,12 +14,28 @@ class LocalStorageTable {
   const LocalStorageTable();
 }
 
+class ConfigTable {
+  final name = "config";
+
+  final id = "id";
+
+  final budget = "budget";
+
+  const ConfigTable();
+}
+
 class BudgetTable {
   final name = "budget";
 
   final id = "id";
 
   final amount = "amount";
+
+  final year = "year";
+
+  final month = "month";
+
+  final day = "day";
 
   const BudgetTable();
 }
@@ -66,15 +84,21 @@ class LocalStorage implements DatabaseExecutor {
       join(await getDatabasesPath(), "${Environment.databaseName}.db"),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY, ${table.budget.amount} INTEGER)",
+          "CREATE TABLE ${table.config.name}(${table.config.id} INTEGER PRIMARY KEY, ${table.config.budget} INTEGER)",
+        );
+        await db.rawInsert(
+          "INSERT INTO ${table.config.name}(${table.config.id}, ${table.budget.id}) VALUES(1, NULL)",
+        );
+        await db.execute(
+          "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.budget.amount} INTEGER NOT NULL, ${table.budget.year} INTEGER NOT NULL, ${table.budget.month} INTEGER NOT NULL, ${table.budget.day} INTEGER NOT NULL)",
         );
         await db.execute(
           "CREATE TABLE ${table.piggyBank.name}(${table.piggyBank.id} INTEGER PRIMARY KEY, ${table.piggyBank.amount} INTEGER)",
         );
-        db.rawInsert(
+        await db.rawInsert(
           "INSERT INTO ${table.piggyBank.name}(${table.piggyBank.id}, ${table.piggyBank.amount}) VALUES(1, 0)",
         );
-        db.execute(
+        await db.execute(
           "CREATE TABLE ${table.expenditure.name}(${table.expenditure.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.expenditure.label} TEXT NOT NULL, ${table.expenditure.amount} INTEGER NOT NULL, ${table.expenditure.year} INTEGER NOT NULL, ${table.expenditure.month} INTEGER NOT NULL, ${table.expenditure.day} INTEGER NOT NULL, ${table.expenditure.hour} INTEGER NOT NULL, ${table.expenditure.minute} INTEGER NOT NULL)",
         );
       },

@@ -1,4 +1,5 @@
 import 'package:jinsusbudget/repositories/budget.dart';
+import 'package:jinsusbudget/repositories/config.dart';
 import 'package:jinsusbudget/repositories/expenditure.dart';
 import 'package:jinsusbudget/repositories/piggy_bank.dart';
 import 'package:jinsusbudget/services/dialog.dart';
@@ -34,6 +35,10 @@ class RepositoryDependencies {
 
   RepositoryDependencies({required StorageDependencies storage})
       : _storage = storage;
+
+  late final config = ConfigRepository(
+    localStorage: _storage.local,
+  );
 
   late final budget = BudgetRepository(
     localStorage: _storage.local,

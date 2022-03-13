@@ -16,7 +16,7 @@ class HomeController extends Controller {
   final PiggyBankRepository piggyBankRepository;
   final ExpenditureRepository expenditureRepository;
 
-  late final _today = BehaviorSubject<DateTime>(onListen: _initToday);
+  late final _today = BehaviorSubject<DateTime>.seeded(DateTime.now());
   Stream<DateTime> get today => _today.stream;
 
   late final _spare = BehaviorSubject<int>(onListen: _initSpare);
@@ -37,12 +37,6 @@ class HomeController extends Controller {
     required this.expenditureRepository,
   });
 
-  void _initToday() async {
-    final result = DateTime.now();
-
-    _today.sink.add(result);
-  }
-
   void _initSpare() async {
     final model = await piggyBankRepository.find();
 
@@ -56,11 +50,9 @@ class HomeController extends Controller {
   }
 
   void _initBudget() async {
-    final model = await budgetRepository.find();
-
-    if (model == null) {
-      return;
-    }
+    final model = await budgetRepository.find(
+      dateTime: _today.value,
+    );
 
     final result = model.amount;
 
@@ -68,9 +60,9 @@ class HomeController extends Controller {
   }
 
   void _initExpenditures() async {
-    final today = DateTime.now();
-
-    final models = await expenditureRepository.findAllForToday(dateTime: today);
+    final models = await expenditureRepository.findAllForToday(
+      dateTime: _today.value,
+    );
 
     _expenditures.sink.add(models);
   }
@@ -87,13 +79,19 @@ class HomeController extends Controller {
     final leftover = _budget.value - amount;
 
     if (leftover < 0) {
-      await budgetRepository.sub(amount: _budget.value);
+      await budgetRepository.sub(
+        amount: _budget.value,
+        dateTime: _today.value,
+      );
 
       await piggyBankRepository.sub(amount: -1 * leftover);
 
       _initSpare();
     } else {
-      await budgetRepository.sub(amount: amount);
+      await budgetRepository.sub(
+        amount: amount,
+        dateTime: _today.value,
+      );
     }
 
     _initBudget();
