@@ -14,8 +14,20 @@ class RouteService {
   }
 
   Future<void> navigateSplashToOnboard() async {
+    await Navigator.of(requireContext()).pushNamed("/onboard", arguments: {
+      "isForStarters": true,
+    });
+  }
+
+  Future<void> navigateHomeToSettings() async {
     await Navigator.of(requireContext()).pushNamed(
-      "/onboard",
+      "/settings",
     );
+  }
+
+  Future<void> navigateSettingsToOnboard() async {
+    await Navigator.of(requireContext()).pushNamed("/onboard", arguments: {
+      "isForStarters": false,
+    });
   }
 }

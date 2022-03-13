@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/controllers/onboard.dart';
@@ -22,26 +24,31 @@ class OnboardView extends View {
   }
 
   @override
-  void onUnmount() {
+  void onDestroy() {
     onboardController.onDispose();
 
-    super.onUnmount();
+    super.onDestroy();
   }
 
   @override
   Widget render(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+
+    final isForStarters = arguments["isForStarters"] as bool;
+
     return GestureDetector(
       onTap: () {
         focusNode.unfocus();
       },
       child: Scaffold(
+        appBar:
+            AppBar(leading: isForStarters ? Container() : const BackButton()),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 16.0),
                 Text(
                   "얼마로 하루를 살까요?",
                   style: Theme.of(context).textTheme.headlineSmall,
@@ -66,8 +73,29 @@ class OnboardView extends View {
                   ),
                 ),
                 const Spacer(),
+                if (!isForStarters) ...[
+                  Row(
+                    children: [
+                      const SizedBox(width: 6.0),
+                      const Icon(
+                        Icons.campaign,
+                        size: 20.0,
+                      ),
+                      const SizedBox(width: 6.0),
+                      Text(
+                        "내일부터 적용됩니다.",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          height: 1.5,
+                          color: Theme.of(context).textTheme.caption?.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12.0),
+                ],
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final value = textEditingController.text;
 
                     final amount = int.tryParse(value);
@@ -78,7 +106,7 @@ class OnboardView extends View {
 
                     onboardController.submit(amount);
                   },
-                  child: const Text("시작하기"),
+                  child: Text(isForStarters ? "시작하기" : "확인"),
                 ),
               ],
             ),
