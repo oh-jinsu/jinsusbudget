@@ -16,10 +16,10 @@ class HomeView extends View {
   }) : super(key: key);
 
   @override
-  void onUnmount() {
+  void onDestroy() {
     controller.onDispose();
 
-    super.onUnmount();
+    super.onDestroy();
   }
 
   @override
@@ -37,7 +37,9 @@ class HomeView extends View {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.navigateToSettings();
+                        },
                         icon: Icon(
                           Icons.settings,
                           color: Theme.of(context).iconTheme.color,

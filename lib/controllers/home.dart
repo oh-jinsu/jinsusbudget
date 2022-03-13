@@ -184,6 +184,10 @@ class HomeController extends Controller {
     _expenditures.sink.add(result);
   }
 
+  void navigateToSettings() {
+    routeService.navigateHomeToSettings();
+  }
+
   @override
   void onDispose() {
     _today.close();
