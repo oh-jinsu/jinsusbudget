@@ -4,14 +4,14 @@ import 'package:sqflite/sql.dart';
 
 class ExpenditureModelMapper {
   static ExpenditureModel map(Map<String, dynamic> map) {
-    final id = map["id"] as int;
-    final label = map["label"] as String;
-    final amount = map["amount"] as int;
-    final year = map["year"] as int;
-    final month = map["month"] as int;
-    final day = map["day"] as int;
-    final hour = map["hour"] as int;
-    final minute = map["minute"] as int;
+    final id = map[LocalStorage.table.expenditure.id] as int;
+    final label = map[LocalStorage.table.expenditure.label] as String;
+    final amount = map[LocalStorage.table.expenditure.amount] as int;
+    final year = map[LocalStorage.table.expenditure.year] as int;
+    final month = map[LocalStorage.table.expenditure.month] as int;
+    final day = map[LocalStorage.table.expenditure.day] as int;
+    final hour = map[LocalStorage.table.expenditure.hour] as int;
+    final minute = map[LocalStorage.table.expenditure.minute] as int;
 
     final formattedDateTime =
         "$year${month.toString().padLeft(2, "0")}${day.toString().padLeft(2, "0")}T${hour.toString().padLeft(2, "0")}${minute.toString().padLeft(2, "0")}00";
