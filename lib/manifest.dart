@@ -18,6 +18,7 @@ class AppManifest {
             controller: HomeController(
               routeService: dependencies.service.route,
               dialogService: dependencies.service.dialog,
+              configRepository: dependencies.repository.config,
               budgetRepository: dependencies.repository.budget,
               piggyBankRepository: dependencies.repository.piggyBank,
               expenditureRepository: dependencies.repository.expenditure,

@@ -1,5 +1,4 @@
 import 'package:jinsusbudget/mappers/budget.dart';
-import 'package:jinsusbudget/mappers/config.dart';
 import 'package:jinsusbudget/models/budget.dart';
 import 'package:jinsusbudget/storages/local.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,7 +10,7 @@ class BudgetRepository {
     required this.localStorage,
   });
 
-  Future<BudgetModel> find({
+  Future<BudgetModel?> find({
     required DateTime dateTime,
   }) async {
     final entities = await localStorage.query(
@@ -22,28 +21,33 @@ class BudgetRepository {
     );
 
     if (entities.isEmpty) {
-      final entities = await localStorage.query(
-        LocalStorage.table.config.name,
-        where: "${LocalStorage.table.config.id} = ?",
-        whereArgs: [1],
-      );
-
-      final config = ConfigMapper.map(entities[0]);
-
-      await localStorage.insert(
-        LocalStorage.table.budget.name,
-        {
-          LocalStorage.table.budget.amount: config.budget,
-          LocalStorage.table.budget.year: dateTime.year,
-          LocalStorage.table.budget.month: dateTime.month + 1,
-          LocalStorage.table.budget.day: dateTime.day,
-        },
-      );
-
-      return find(dateTime: dateTime);
+      return null;
     }
 
     return BudgetMapper.map(entities[0]);
+  }
+
+  Future<BudgetModel> save({
+    required int amount,
+    required DateTime dateTime,
+  }) async {
+    await localStorage.insert(
+      LocalStorage.table.budget.name,
+      {
+        LocalStorage.table.budget.amount: amount,
+        LocalStorage.table.budget.year: dateTime.year,
+        LocalStorage.table.budget.month: dateTime.month + 1,
+        LocalStorage.table.budget.day: dateTime.day,
+      },
+    );
+
+    final result = await find(dateTime: dateTime);
+
+    if (result == null) {
+      throw Exception();
+    }
+
+    return result;
   }
 
   Future<BudgetModel> sub({
@@ -51,6 +55,10 @@ class BudgetRepository {
     required DateTime dateTime,
   }) async {
     final budget = await find(dateTime: dateTime);
+
+    if (budget == null) {
+      throw Exception();
+    }
 
     await localStorage.update(
       LocalStorage.table.budget.name,
@@ -64,6 +72,10 @@ class BudgetRepository {
     );
 
     final result = await find(dateTime: dateTime);
+
+    if (result == null) {
+      throw Exception();
+    }
 
     return result;
   }
