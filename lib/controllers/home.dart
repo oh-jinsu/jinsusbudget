@@ -84,6 +84,20 @@ class HomeController extends Controller {
       amount: amount,
     );
 
+    final leftover = _budget.value - amount;
+
+    if (leftover < 0) {
+      await budgetRepository.sub(amount: _budget.value);
+
+      await piggyBankRepository.sub(amount: -1 * leftover);
+
+      _initSpare();
+    } else {
+      await budgetRepository.sub(amount: amount);
+    }
+
+    _initBudget();
+
     final array = _expenditures.value;
 
     final result = [...array, model];

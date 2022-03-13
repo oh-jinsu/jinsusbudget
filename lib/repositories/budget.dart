@@ -50,4 +50,30 @@ class BudgetRepository {
 
     return result;
   }
+
+  Future<BudgetModel> sub({required int amount}) async {
+    final budget = await find();
+
+    if (budget == null) {
+      throw Exception("예산이 존재하지 않습니다.");
+    }
+
+    await localStorage.update(
+      LocalStorage.table.budget.name,
+      {
+        LocalStorage.table.budget.amount: budget.amount - amount,
+      },
+      where: "${LocalStorage.table.budget.id} = ?",
+      whereArgs: [1],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    final result = await find();
+
+    if (result == null) {
+      throw Exception("예산이 존재하지 않습니다.");
+    }
+
+    return result;
+  }
 }
