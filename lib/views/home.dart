@@ -25,75 +25,81 @@ class HomeView extends View {
   @override
   Widget render(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 48.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.settings,
-                    color: Theme.of(context).iconTheme.color,
+      body: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).padding.top),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.settings,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ),
+                      const SizedBox(width: 8.0),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 8.0),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomePiggyBank(
-                homeController: controller,
-              ),
-            ),
-            const SizedBox(height: 24.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: StreamBuilder(
-                stream: controller.today,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final data = snapshot.data as DateTime;
+                  const SizedBox(height: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: HomePiggyBank(
+                      homeController: controller,
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0),
+                    child: StreamBuilder(
+                      stream: controller.today,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final data = snapshot.data as DateTime;
 
-                    return Text(
-                      DateFormat("yyyy년 M월 d일").format(data),
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    );
-                  }
+                          return Text(
+                            DateFormat("yyyy년 M월 d일").format(data),
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          );
+                        }
 
-                  return const Center(child: CircularProgressIndicator());
-                },
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: HomePocket(
+                      homeController: controller,
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0, right: 10.0),
+                    child: HomeLedgerHeader(
+                      homeController: controller,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: HomeLedger(
+                      homeController: controller,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
+                  ),
+                  const SizedBox(height: 32.0),
+                ],
               ),
             ),
-            const SizedBox(height: 8.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomePocket(
-                homeController: controller,
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0, right: 10.0),
-              child: HomeLedgerHeader(
-                homeController: controller,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: HomeLedger(
-                homeController: controller,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-              ),
-            ),
-            const SizedBox(height: 32.0),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
