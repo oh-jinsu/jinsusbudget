@@ -25,7 +25,7 @@ class HomePiggyBank extends StatelessWidget {
             height: 8.0,
           ),
           StreamBuilder(
-            stream: homeController.spare,
+            stream: homeController.piggyBank,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final data = snapshot.data as int;

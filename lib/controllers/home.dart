@@ -23,8 +23,8 @@ class HomeController extends Controller {
   late final _today = BehaviorSubject<DateTime>.seeded(DateTime.now());
   Stream<DateTime> get today => _today.stream;
 
-  late final _spare = BehaviorSubject<int>(onListen: _initSpare);
-  Stream<int> get spare => _spare.stream;
+  late final _piggyBank = BehaviorSubject<int>(onListen: _initPiggyBank);
+  Stream<int> get piggyBank => _piggyBank.stream;
 
   late final _budget = BehaviorSubject<int>(onListen: _initBudget);
   Stream<int> get budget => _budget.stream;
@@ -42,7 +42,7 @@ class HomeController extends Controller {
     required this.expenditureRepository,
   });
 
-  void _initSpare() async {
+  void _initPiggyBank() async {
     final model = await piggyBankRepository.find();
 
     if (model == null) {
@@ -51,7 +51,7 @@ class HomeController extends Controller {
 
     final result = model.amount;
 
-    _spare.sink.add(result);
+    _piggyBank.sink.add(result);
   }
 
   void _initBudget() async {
@@ -167,7 +167,7 @@ class HomeController extends Controller {
 
       await piggyBankRepository.sub(amount: -1 * leftover);
 
-      _initSpare();
+      _initPiggyBank();
     } else {
       await budgetRepository.sub(
         amount: amount,
@@ -188,7 +188,7 @@ class HomeController extends Controller {
   void onDispose() {
     _today.close();
 
-    _spare.close();
+    _piggyBank.close();
 
     _budget.close();
 
