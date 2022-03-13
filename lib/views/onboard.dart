@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/controllers/onboard.dart';
