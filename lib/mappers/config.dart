@@ -6,6 +6,9 @@ class ConfigMapper {
     return ConfigModel(
       id: entity[LocalStorage.table.config.id],
       budget: entity[LocalStorage.table.config.budget],
+      lastVisit: DateTime.fromMillisecondsSinceEpoch(
+        entity[LocalStorage.table.config.lastVisited],
+      ),
     );
   }
 }

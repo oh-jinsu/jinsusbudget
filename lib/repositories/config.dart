@@ -33,4 +33,17 @@ class ConfigRepository {
 
     return find();
   }
+
+  Future<ConfigModel> updateLastVisit({
+    required DateTime dateTime,
+  }) async {
+    await localStorage.update(
+      LocalStorage.table.config.name,
+      {
+        LocalStorage.table.config.lastVisited: dateTime.millisecondsSinceEpoch,
+      },
+    );
+
+    return find();
+  }
 }

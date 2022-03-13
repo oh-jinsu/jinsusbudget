@@ -21,6 +21,8 @@ class ConfigTable {
 
   final budget = "budget";
 
+  final lastVisited = "last_visited";
+
   const ConfigTable();
 }
 
@@ -84,10 +86,10 @@ class LocalStorage implements DatabaseExecutor {
       join(await getDatabasesPath(), "${Environment.databaseName}.db"),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE ${table.config.name}(${table.config.id} INTEGER PRIMARY KEY, ${table.config.budget} INTEGER)",
+          "CREATE TABLE ${table.config.name}(${table.config.id} INTEGER PRIMARY KEY, ${table.config.budget} INTEGER, ${table.config.lastVisited} INTEGER NOT NULL)",
         );
         await db.rawInsert(
-          "INSERT INTO ${table.config.name}(${table.config.id}, ${table.budget.id}) VALUES(1, NULL)",
+          "INSERT INTO ${table.config.name}(${table.config.id}, ${table.config.id}, ${table.config.lastVisited}) VALUES(1, NULL, ${DateTime.now().millisecondsSinceEpoch})",
         );
         await db.execute(
           "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.budget.amount} INTEGER NOT NULL, ${table.budget.year} INTEGER NOT NULL, ${table.budget.month} INTEGER NOT NULL, ${table.budget.day} INTEGER NOT NULL)",
