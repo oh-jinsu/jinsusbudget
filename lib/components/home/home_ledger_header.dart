@@ -109,7 +109,7 @@ class HomeLedgerHeader extends StatelessWidget {
               TextField(
                 controller: labelTextEditingController,
                 focusNode: labelFocusNode,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   hintText: "용처",
                   filled: true,
