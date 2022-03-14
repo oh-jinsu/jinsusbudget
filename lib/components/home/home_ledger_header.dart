@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jinsusbudget/controllers/home.dart';
+import 'package:jinsusbudget/theme/formatter.dart';
 
 class HomeLedgerHeader extends StatelessWidget {
   final HomeController homeController;
@@ -59,46 +60,40 @@ class HomeLedgerHeader extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: amountTextEditingController,
-                      focusNode: amountFocusNode,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      decoration: InputDecoration(
-                        hintText: "금액",
-                        filled: true,
-                        fillColor: Theme.of(context).scaffoldBackgroundColor,
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 8.0,
-                          horizontal: 16.0,
-                        ),
-                        border: OutlineInputBorder(
-                          gapPadding: 0.0,
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8.0),
-                  const Text(
-                    "원",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  const SizedBox(width: 4.0),
+              TextField(
+                controller: amountTextEditingController,
+                focusNode: amountFocusNode,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  AmountInputFormatter(),
                 ],
+                decoration: InputDecoration(
+                  hintText: "금액",
+                  hintStyle: TextStyle(
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.color
+                        ?.withOpacity(0.3),
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  border: OutlineInputBorder(
+                    gapPadding: 0.0,
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 20.0,
+                ),
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                 child: Text(
@@ -112,6 +107,13 @@ class HomeLedgerHeader extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   hintText: "용처",
+                  hintStyle: TextStyle(
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.color
+                        ?.withOpacity(0.3),
+                  ),
                   filled: true,
                   fillColor: Theme.of(context).scaffoldBackgroundColor,
                   contentPadding: const EdgeInsets.symmetric(
@@ -143,7 +145,11 @@ class HomeLedgerHeader extends StatelessWidget {
                   return;
                 }
 
-                final amount = int.tryParse(amountTextEditingController.text);
+                final amount = int.tryParse(
+                  amountTextEditingController.text
+                      .replaceAll(",", "")
+                      .replaceFirst("원", ""),
+                );
 
                 if (amount == null) {
                   return;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/controllers/onboard.dart';
+import 'package:jinsusbudget/theme/formatter.dart';
 
 class OnboardView extends View {
   final OnboardController onboardController;
@@ -58,9 +59,10 @@ class OnboardView extends View {
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
+                    AmountInputFormatter(),
                   ],
                   decoration: InputDecoration(
-                    hintText: "10000",
+                    hintText: "10000원",
                     hintStyle: TextStyle(
                       color: Theme.of(context)
                           .textTheme
@@ -98,7 +100,9 @@ class OnboardView extends View {
                 ],
                 ElevatedButton(
                   onPressed: () async {
-                    final value = textEditingController.text;
+                    final value = textEditingController.text
+                        .replaceAll(",", "")
+                        .replaceFirst("원", "");
 
                     final amount = int.tryParse(value);
 
