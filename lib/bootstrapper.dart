@@ -11,17 +11,21 @@ class Bootstrapper {
   void run({
     bool reset = false,
   }) async {
+    final from = DateTime.now();
+
     if (reset) {
       await _restart();
     } else {
       await _coldstart();
     }
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    final elapsed = from.difference(DateTime.now());
+
+    await Future.delayed(const Duration(milliseconds: 1000) + elapsed);
 
     await _setBudget();
 
-    dependencies.service.route.navigateSplashToHome();
+    _finish();
   }
 
   Future<void> _restart() async {
@@ -42,5 +46,9 @@ class Bootstrapper {
 
       return _setBudget();
     }
+  }
+
+  void _finish() {
+    dependencies.service.route.navigateSplashToHome();
   }
 }

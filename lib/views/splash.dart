@@ -3,7 +3,7 @@ import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/bootstrapper.dart';
 
 class SplashArguments {
-  late bool reset;
+  bool reset = false;
 }
 
 class SplashView extends View {
