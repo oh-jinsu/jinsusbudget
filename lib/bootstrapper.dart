@@ -8,16 +8,30 @@ class Bootstrapper {
     required this.dependencies,
   });
 
-  void run() async {
-    await Environment.initialize();
-
-    await dependencies.storage.local.initialize();
+  void run({
+    bool reset = false,
+  }) async {
+    if (reset) {
+      await _restart();
+    } else {
+      await _coldstart();
+    }
 
     await Future.delayed(const Duration(milliseconds: 500));
 
     await _setBudget();
 
     dependencies.service.route.navigateSplashToHome();
+  }
+
+  Future<void> _restart() async {
+    await dependencies.storage.local.reset();
+  }
+
+  Future<void> _coldstart() async {
+    await Environment.initialize();
+
+    await dependencies.storage.local.open();
   }
 
   Future<void> _setBudget() async {

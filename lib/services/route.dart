@@ -30,4 +30,10 @@ class RouteService {
       "isForStarters": false,
     });
   }
+
+  Future<void> navigateSettingsToSplash() async {
+    await Navigator.of(requireContext()).pushNamed("/splash", arguments: {
+      "reset": true,
+    });
+  }
 }

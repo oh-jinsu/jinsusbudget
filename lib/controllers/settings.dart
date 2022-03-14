@@ -15,6 +15,10 @@ class SettingsController extends Controller {
     routeService.navigateSettingsToOnboard();
   }
 
+  void resetEverything() {
+    routeService.navigateSettingsToSplash();
+  }
+
   @override
   void onDispose() {}
 }

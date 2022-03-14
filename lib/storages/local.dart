@@ -81,30 +81,46 @@ class LocalStorage implements DatabaseExecutor {
 
   static const table = LocalStorageTable();
 
-  Future<void> initialize() async {
+  Future<void> reset() async {
+    await database.execute("DROP TABLE IF EXISTS ${table.config.name}");
+
+    await database.execute("DROP TABLE IF EXISTS ${table.budget.name}");
+
+    await database.execute("DROP TABLE IF EXISTS ${table.piggyBank.name}");
+
+    await database.execute("DROP TABLE IF EXISTS ${table.expenditure.name}");
+
+    await _createTables(database);
+  }
+
+  Future<void> open() async {
     _database = await openDatabase(
       join(await getDatabasesPath(), "${Environment.databaseName}.db"),
       onCreate: (db, version) async {
-        await db.execute(
-          "CREATE TABLE ${table.config.name}(${table.config.id} INTEGER PRIMARY KEY, ${table.config.budget} INTEGER, ${table.config.lastVisited} INTEGER NOT NULL)",
-        );
-        await db.rawInsert(
-          "INSERT INTO ${table.config.name}(${table.config.id}, ${table.config.id}, ${table.config.lastVisited}) VALUES(1, NULL, ${DateTime.now().millisecondsSinceEpoch})",
-        );
-        await db.execute(
-          "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.budget.amount} INTEGER NOT NULL, ${table.budget.year} INTEGER NOT NULL, ${table.budget.month} INTEGER NOT NULL, ${table.budget.day} INTEGER NOT NULL)",
-        );
-        await db.execute(
-          "CREATE TABLE ${table.piggyBank.name}(${table.piggyBank.id} INTEGER PRIMARY KEY, ${table.piggyBank.amount} INTEGER)",
-        );
-        await db.rawInsert(
-          "INSERT INTO ${table.piggyBank.name}(${table.piggyBank.id}, ${table.piggyBank.amount}) VALUES(1, 0)",
-        );
-        await db.execute(
-          "CREATE TABLE ${table.expenditure.name}(${table.expenditure.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.expenditure.label} TEXT NOT NULL, ${table.expenditure.amount} INTEGER NOT NULL, ${table.expenditure.year} INTEGER NOT NULL, ${table.expenditure.month} INTEGER NOT NULL, ${table.expenditure.day} INTEGER NOT NULL, ${table.expenditure.hour} INTEGER NOT NULL, ${table.expenditure.minute} INTEGER NOT NULL)",
-        );
+        await _createTables(db);
       },
       version: Environment.databaseVersion,
+    );
+  }
+
+  Future<void> _createTables(Database db) async {
+    await db.execute(
+      "CREATE TABLE ${table.config.name}(${table.config.id} INTEGER PRIMARY KEY, ${table.config.budget} INTEGER, ${table.config.lastVisited} INTEGER NOT NULL)",
+    );
+    await db.rawInsert(
+      "INSERT INTO ${table.config.name}(${table.config.id}, ${table.config.id}, ${table.config.lastVisited}) VALUES(1, NULL, ${DateTime.now().millisecondsSinceEpoch})",
+    );
+    await db.execute(
+      "CREATE TABLE ${table.budget.name}(${table.budget.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.budget.amount} INTEGER NOT NULL, ${table.budget.year} INTEGER NOT NULL, ${table.budget.month} INTEGER NOT NULL, ${table.budget.day} INTEGER NOT NULL)",
+    );
+    await db.execute(
+      "CREATE TABLE ${table.piggyBank.name}(${table.piggyBank.id} INTEGER PRIMARY KEY, ${table.piggyBank.amount} INTEGER)",
+    );
+    await db.rawInsert(
+      "INSERT INTO ${table.piggyBank.name}(${table.piggyBank.id}, ${table.piggyBank.amount}) VALUES(1, 0)",
+    );
+    await db.execute(
+      "CREATE TABLE ${table.expenditure.name}(${table.expenditure.id} INTEGER PRIMARY KEY AUTOINCREMENT, ${table.expenditure.label} TEXT NOT NULL, ${table.expenditure.amount} INTEGER NOT NULL, ${table.expenditure.year} INTEGER NOT NULL, ${table.expenditure.month} INTEGER NOT NULL, ${table.expenditure.day} INTEGER NOT NULL, ${table.expenditure.hour} INTEGER NOT NULL, ${table.expenditure.minute} INTEGER NOT NULL)",
     );
   }
 
