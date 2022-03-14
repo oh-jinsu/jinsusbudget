@@ -12,13 +12,15 @@ class AppContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.circular(16.0),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16.0),
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }
