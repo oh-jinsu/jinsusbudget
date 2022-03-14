@@ -3,12 +3,14 @@ import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/bootstrapper.dart';
 
 class SplashArguments {
-  bool reset = false;
+  final bool reset;
+
+  SplashArguments({
+    required this.reset,
+  });
 }
 
-class SplashView extends View {
-  final arguments = SplashArguments();
-
+class SplashView extends View<SplashArguments> {
   final Bootstrapper bootstrapper;
 
   SplashView({
@@ -17,19 +19,20 @@ class SplashView extends View {
   }) : super(key: key);
 
   @override
-  void onCreate(BuildContext context) {
-    super.onCreate(context);
-
-    final args = ModalRoute.of(context)!.settings.arguments as Map?;
-
-    arguments.reset = args?["reset"] ?? false;
-  }
-
-  @override
   void onStart(BuildContext context) {
     super.onStart(context);
 
-    bootstrapper.run(reset: arguments.reset);
+    final reset = _getReset();
+
+    bootstrapper.run(reset: reset);
+  }
+
+  bool _getReset() {
+    try {
+      return arguments.reset;
+    } on Error {
+      return false;
+    }
   }
 
   @override

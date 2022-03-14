@@ -4,10 +4,12 @@ import 'package:jinsusbudget/components/app/container.dart';
 import 'package:jinsusbudget/components/settings/menu_button.dart';
 import 'package:jinsusbudget/controllers/settings.dart';
 
-class SettingsView extends View {
+class SettingsArguments {}
+
+class SettingsView extends View<SettingsArguments> {
   final SettingsController settingsController;
 
-  const SettingsView({
+  SettingsView({
     Key? key,
     required this.settingsController,
   }) : super(key: key);

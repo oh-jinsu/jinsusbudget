@@ -61,8 +61,13 @@ class __ViewState extends State<_View> {
   }
 }
 
-abstract class View extends StatelessWidget {
-  const View({Key? key}) : super(key: key);
+abstract class View<T> extends StatelessWidget {
+  late final T? _arguments;
+
+  T get arguments => _arguments!;
+
+  // ignore: prefer_const_constructors_in_immutables
+  View({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +81,9 @@ abstract class View extends StatelessWidget {
     );
   }
 
-  void onCreate(BuildContext context) {}
+  void onCreate(BuildContext context) {
+    _arguments = ModalRoute.of(context)!.settings.arguments as T?;
+  }
 
   void onStart(BuildContext context) {}
 

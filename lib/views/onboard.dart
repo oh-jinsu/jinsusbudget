@@ -4,9 +4,15 @@ import 'package:jinsusbudget/__core__/view.dart';
 import 'package:jinsusbudget/controllers/onboard.dart';
 import 'package:jinsusbudget/theme/formatter.dart';
 
-class OnboardView extends View {
-  late final bool _isForStarters;
+class OnboardArguments {
+  final bool forStarter;
 
+  OnboardArguments({
+    required this.forStarter,
+  });
+}
+
+class OnboardView extends View<OnboardArguments> {
   final OnboardController onboardController;
 
   final FocusNode focusNode = FocusNode();
@@ -17,15 +23,6 @@ class OnboardView extends View {
     Key? key,
     required this.onboardController,
   }) : super(key: key);
-
-  @override
-  void onCreate(BuildContext context) {
-    super.onCreate(context);
-
-    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
-
-    _isForStarters = arguments["isForStarters"] as bool;
-  }
 
   @override
   void onStart(BuildContext context) {
@@ -48,8 +45,8 @@ class OnboardView extends View {
         focusNode.unfocus();
       },
       child: Scaffold(
-        appBar:
-            AppBar(leading: _isForStarters ? Container() : const BackButton()),
+        appBar: AppBar(
+            leading: arguments.forStarter ? Container() : const BackButton()),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -84,7 +81,7 @@ class OnboardView extends View {
                   ),
                 ),
                 const Spacer(),
-                if (!_isForStarters) ...[
+                if (!arguments.forStarter) ...[
                   Row(
                     children: [
                       const SizedBox(width: 6.0),
@@ -119,7 +116,7 @@ class OnboardView extends View {
 
                     onboardController.submit(amount);
                   },
-                  child: Text(_isForStarters ? "시작하기" : "확인"),
+                  child: Text(arguments.forStarter ? "시작하기" : "확인"),
                 ),
               ],
             ),

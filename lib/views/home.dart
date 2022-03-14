@@ -7,10 +7,12 @@ import 'package:jinsusbudget/components/home/home_ledger.dart';
 import 'package:jinsusbudget/components/home/home_piggy_bank.dart';
 import 'package:jinsusbudget/controllers/home.dart';
 
-class HomeView extends View {
+class HomeArguments {}
+
+class HomeView extends View<HomeArguments> {
   final HomeController controller;
 
-  const HomeView({
+  HomeView({
     Key? key,
     required this.controller,
   }) : super(key: key);
