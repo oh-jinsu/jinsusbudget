@@ -29,7 +29,7 @@ class HomeLedgerItem extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4.0),
+              const SizedBox(height: 2.0),
               Text(
                 formatTimestamp(timestamp),
                 style: TextStyle(
@@ -38,7 +38,7 @@ class HomeLedgerItem extends StatelessWidget {
                       .bodyMedium
                       ?.color
                       ?.withOpacity(.7),
-                  fontSize: 16,
+                  fontSize: 14.0,
                 ),
               ),
               const SizedBox(height: 16.0),

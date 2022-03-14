@@ -36,7 +36,10 @@ class SettingsView extends View {
                 ),
                 child: Text(
                   "일일 예산 바꾸기",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
+                  ),
                 ),
               ),
             ],
