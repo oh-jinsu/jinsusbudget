@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jinsusbudget/bootstrapper.dart';
 import 'package:jinsusbudget/controllers/onboard.dart';
 import 'package:jinsusbudget/controllers/settings.dart';
 import 'package:jinsusbudget/dependencies.dart';
@@ -6,6 +7,7 @@ import 'package:jinsusbudget/controllers/home.dart';
 import 'package:jinsusbudget/views/home.dart';
 import 'package:jinsusbudget/views/onboard.dart';
 import 'package:jinsusbudget/views/settings.dart';
+import 'package:jinsusbudget/views/splash.dart';
 
 class AppManifest {
   final AppDependencies dependencies;
@@ -14,6 +16,11 @@ class AppManifest {
 
   Map<String, Widget Function(BuildContext context)> get list {
     return {
+      "/splash": (context) => SplashView(
+            bootstrapper: Bootstrapper(
+              dependencies: dependencies,
+            ),
+          ),
       "/home": (context) => HomeView(
             controller: HomeController(
               routeService: dependencies.service.route,
