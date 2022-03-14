@@ -11,9 +11,14 @@ class SplashView extends View {
   }) : super(key: key);
 
   @override
-  Widget render(BuildContext context) {
-    Future.delayed(Duration.zero, () => bootstrapper.run());
+  void onStart(BuildContext context) {
+    super.onStart(context);
 
+    bootstrapper.run();
+  }
+
+  @override
+  Widget render(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Text(

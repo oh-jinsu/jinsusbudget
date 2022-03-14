@@ -3,19 +3,21 @@ import 'package:jinsusbudget/__core__/context.dart';
 import 'package:jinsusbudget/debug.dart';
 
 class _View extends StatefulWidget {
+  final BuildContext inheritedContext;
   final String label;
   final Widget Function(BuildContext) renderer;
-  final void Function() onMount;
-  final void Function() onWillMount;
-  final void Function() onUnmount;
+  final void Function(BuildContext) onCreate;
+  final void Function(BuildContext) onStart;
+  final void Function(BuildContext) onDestroy;
 
   const _View({
     Key? key,
+    required this.inheritedContext,
     required this.label,
     required this.renderer,
-    required this.onMount,
-    required this.onWillMount,
-    required this.onUnmount,
+    required this.onCreate,
+    required this.onStart,
+    required this.onDestroy,
   }) : super(key: key);
 
   @override
@@ -25,19 +27,19 @@ class _View extends StatefulWidget {
 class __ViewState extends State<_View> {
   @override
   void initState() {
-    widget.onWillMount();
+    widget.onCreate(widget.inheritedContext);
 
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.onUnmount();
+    widget.onDestroy(context);
 
     contextQueue.remove(context);
 
     Debug.log(
-      "${widget.label} will be unmounted, stack size is ${contextQueue.length}",
+      "${widget.label} is being destroyed, stack size is ${contextQueue.length}",
     );
 
     super.dispose();
@@ -49,11 +51,11 @@ class __ViewState extends State<_View> {
       contextQueue.add(context);
 
       Debug.log(
-        "${widget.label} will be mounted, stack size is ${contextQueue.length}",
+        "${widget.label} is being mounted, stack size is ${contextQueue.length}",
       );
-    }
 
-    Future.delayed(Duration.zero, widget.onMount);
+      Future.delayed(Duration.zero, () => widget.onStart(context));
+    }
 
     return widget.renderer(context);
   }
@@ -65,19 +67,20 @@ abstract class View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _View(
+      inheritedContext: context,
       label: toString(),
       renderer: render,
-      onMount: onMount,
-      onWillMount: onCreate,
-      onUnmount: onDestroy,
+      onCreate: onCreate,
+      onStart: onStart,
+      onDestroy: onDestroy,
     );
   }
 
-  void onCreate() {}
+  void onCreate(BuildContext context) {}
 
-  void onMount() {}
+  void onStart(BuildContext context) {}
 
-  void onDestroy() {}
+  void onDestroy(BuildContext context) {}
 
   Widget render(BuildContext context);
 }

@@ -5,6 +5,8 @@ import 'package:jinsusbudget/controllers/onboard.dart';
 import 'package:jinsusbudget/theme/formatter.dart';
 
 class OnboardView extends View {
+  late final bool _isForStarters;
+
   final OnboardController onboardController;
 
   final FocusNode focusNode = FocusNode();
@@ -17,32 +19,37 @@ class OnboardView extends View {
   }) : super(key: key);
 
   @override
-  void onMount() {
-    super.onMount();
+  void onCreate(BuildContext context) {
+    super.onCreate(context);
+
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+
+    _isForStarters = arguments["isForStarters"] as bool;
+  }
+
+  @override
+  void onStart(BuildContext context) {
+    super.onStart(context);
 
     focusNode.requestFocus();
   }
 
   @override
-  void onDestroy() {
+  void onDestroy(BuildContext context) {
     onboardController.onDispose();
 
-    super.onDestroy();
+    super.onDestroy(context);
   }
 
   @override
   Widget render(BuildContext context) {
-    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
-
-    final isForStarters = arguments["isForStarters"] as bool;
-
     return GestureDetector(
       onTap: () {
         focusNode.unfocus();
       },
       child: Scaffold(
         appBar:
-            AppBar(leading: isForStarters ? Container() : const BackButton()),
+            AppBar(leading: _isForStarters ? Container() : const BackButton()),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -77,7 +84,7 @@ class OnboardView extends View {
                   ),
                 ),
                 const Spacer(),
-                if (!isForStarters) ...[
+                if (!_isForStarters) ...[
                   Row(
                     children: [
                       const SizedBox(width: 6.0),
@@ -112,7 +119,7 @@ class OnboardView extends View {
 
                     onboardController.submit(amount);
                   },
-                  child: Text(isForStarters ? "시작하기" : "확인"),
+                  child: Text(_isForStarters ? "시작하기" : "확인"),
                 ),
               ],
             ),

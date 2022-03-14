@@ -16,10 +16,10 @@ class HomeView extends View {
   }) : super(key: key);
 
   @override
-  void onDestroy() {
+  void onDestroy(BuildContext context) {
     controller.onDispose();
 
-    super.onDestroy();
+    super.onDestroy(context);
   }
 
   @override
