@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codersproduct.jinsusbudget">
    <application
-        android:label="jinsusbudget"
+        android:label="진수의 가계부"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
