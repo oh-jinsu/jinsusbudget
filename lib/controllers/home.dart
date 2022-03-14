@@ -146,6 +146,8 @@ class HomeController extends Controller {
     final amount = leftOvers.reduce((value, element) => value + element);
 
     await piggyBankRepository.add(amount: amount);
+
+    _piggyBank.sink.add(amount);
   }
 
   void submitExpenditure({
