@@ -19,7 +19,7 @@ class ExpenditureRepository {
             "${LocalStorage.table.expenditure.year} = ? AND ${LocalStorage.table.expenditure.month} = ? AND ${LocalStorage.table.expenditure.day} = ?",
         whereArgs: [dateTime.year, dateTime.month + 1, dateTime.day],
         orderBy:
-            "${LocalStorage.table.expenditure.hour} ASC, ${LocalStorage.table.expenditure.minute} ASC");
+            "${LocalStorage.table.expenditure.hour} DESC, ${LocalStorage.table.expenditure.minute} DESC");
 
     return results.map((e) => ExpenditureMapper.map(e)).toList();
   }

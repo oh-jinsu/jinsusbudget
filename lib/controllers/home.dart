@@ -179,7 +179,7 @@ class HomeController extends Controller {
 
     final array = _expenditures.value;
 
-    final result = [...array, model];
+    final result = [model, ...array];
 
     _expenditures.sink.add(result);
   }
