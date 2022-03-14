@@ -39,9 +39,17 @@ class SplashView extends View<SplashArguments> {
   Widget render(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          "진수의 가계부",
-          style: Theme.of(context).textTheme.headlineMedium,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              "📒",
+              style: TextStyle(
+                fontSize: 72.0,
+                height: 1.0,
+              ),
+            ),
+          ],
         ),
       ),
     );
