@@ -54,7 +54,7 @@ class OnboardView extends View<OnboardArguments> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  "얼마로 하루를 살까요?",
+                  "하루에 얼마를 쓸까요?",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 TextField(
@@ -66,7 +66,7 @@ class OnboardView extends View<OnboardArguments> {
                     AmountInputFormatter(),
                   ],
                   decoration: InputDecoration(
-                    hintText: "10000원",
+                    hintText: "10,000원",
                     hintStyle: TextStyle(
                       color: Theme.of(context)
                           .textTheme
