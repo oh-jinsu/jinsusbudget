@@ -20,7 +20,16 @@ class HomeController extends Controller {
   final PiggyBankRepository piggyBankRepository;
   final ExpenditureRepository expenditureRepository;
 
-  late final _today = BehaviorSubject<DateTime>.seeded(DateTime.now());
+  final now = DateTime.now();
+
+  late final _today = BehaviorSubject<DateTime>.seeded(
+    now
+        .subtract(Duration(hours: now.hour))
+        .subtract(Duration(minutes: now.minute))
+        .subtract(Duration(seconds: now.second))
+        .subtract(Duration(milliseconds: now.millisecond))
+        .subtract(Duration(microseconds: now.microsecond)),
+  );
   Stream<DateTime> get today => _today.stream;
 
   late final _piggyBank = BehaviorSubject<int>(onListen: _initPiggyBank);
